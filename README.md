@@ -1,2 +1,2 @@
 # express.js-node.js-mvc-app
-Checking Out Express Web Application Development
+Developing an Express Web Application on node.js using sails framework.
