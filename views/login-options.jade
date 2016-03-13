@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1 Login options
+  ul
+    li
+      a(href="/auth/facebook") Facebook
+    li
+      a(href="/auth/twitter") Twitter
+    if (user)
+      li
+        a(href="/auth/logout") Logout
