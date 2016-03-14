@@ -3,22 +3,21 @@ extends layout
 block content
   .row
     .col-md-6
-      h1 Edit a contact
+      h1 Edit contact
       form(role="form", method="post", action="/contacts/#{contact.id}?_method=put")
-        include editform
-        button.btn.btn-primary(type="submit") Edit user
-
+        include editform 
+        button.btn.btn-primary(type="submit") Update user
     .col-md-6
       h2 Notes
       form(role="form", method="post", action="/contacts/#{contact.id}")
         dl
-          if contact.notes
+          if !contact.notes
+            dt Add a note
+          else
             each note in contact.notes
-              dt= note.created
+              dt(title=moment(note.postedDate).format("YYYY-MM-DD HH:mm"))= moment(note.postedDate).fromNow()
               dd= note.note
-        
         .form-group
-          label(for="notes")
-          textarea#notes.form-control(name="notes")
-
+          label(for="notes") Add note:
+          textarea(name="notes").form-control#notes
         button.btn.btn-default(type="submit", value="addnote") Add note
