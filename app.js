@@ -3,12 +3,17 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
+var session = require('express-session');
 var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 var mongoose = require('mongoose');
+var MongoStore = require('connect-mongo')(session);
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 
 var routes = require('./routes/index');
 var contacts = require('./routes/contacts');
+var auth = require('./routes/auth');
 
 var MongoURI = process.env.MONGO_URI || 'mongodb://localhost/testdb';
 mongoose.connect(MongoURI, function(err, res) {
@@ -32,11 +37,28 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(methodOverride('_method'));
 app.use(cookieParser());
+app.use(session({
+    store: new MongoStore({url: MongoURI}),
+    secret: 'learn node',
+    resave: true,
+    saveUninitialized: false
+}));
 app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Passport configuration
+app.use(passport.initialize());
+app.use(passport.session());
+
+var Account = require('./models/account');
+passport.use(Account.createStrategy());
+
+passport.serializeUser(Account.serializeUser());
+passport.deserializeUser(Account.deserializeUser());
+
 app.use('/', routes);
 app.use('/contacts/', contacts);
+app.use('/auth/', auth);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

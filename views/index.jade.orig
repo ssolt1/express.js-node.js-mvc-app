@@ -4,7 +4,7 @@ block content
   h1= title
   p Welcome to #{title}
   p
-    a(href="/contacts").btn.btn-default Our contacts app
+    a.btn.btn-default(href="/contacts/") View contacts
 
    if (user)
       p You are logged in as #{user.username}

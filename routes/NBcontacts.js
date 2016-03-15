@@ -5,10 +5,10 @@ var moment = require('moment');
 var Contact = require('../models/contacts');
 
 router.use(function(req, res, next) {
-   if(!req.user) {
-      res.redirect('/auth');
-   }
-   next();
+  if(!req.user) {
+    res.redirect('/');
+  }
+  next();
 });
 
 router.get('/', function(req, res) {
@@ -17,7 +17,12 @@ router.get('/', function(req, res) {
   })
 });
 
-router.post('/', function(req, res) {
+router.route('/add')
+  .get(function(req, res) {
+    res.render('add', { contact: {} });
+  })
+
+  .post(function(req, res) {
     new Contact({
       name: req.body.fullname,
       job: req.body.job,
@@ -30,11 +35,7 @@ router.post('/', function(req, res) {
         res.send("New contact created");
       }
     })
-});
-
-router.get('/add', function(req, res) {
-  res.render('add', {contact: {}});
-});
+  });
 
 router.route('/:contact_id')
   .all(function(req, res, next) {
@@ -50,21 +51,8 @@ router.route('/:contact_id')
     res.render('edit', {contact: contact, moment: moment});
   })
 
-  .post(function(req, res, next) {
-    contact.notes.push({
-      note: req.body.notes
-    });
-
-    contact.save(function(err, contact, count) {
-      if(err) {
-        res.status(400).send('Error adding note: ' + err);
-      } else {
-        res.send('Note added!');
-      }
-    });
-  })
-
   .put(function(req, res, next) {
+
     contact.name = req.body.fullname;
     contact.job = req.body.job;
     contact.nickname = req.body.nickname;
@@ -75,6 +63,20 @@ router.route('/:contact_id')
         res.status(400).send('Error saving contact: ' + err);
       } else {
         res.send('Contact saved');
+      }
+    });
+  })
+
+  .post(function(req, res, next) {
+
+    contact.notes.push({
+      note: req.body.notes
+    });
+    contact.save(function(err, contact, count) {
+      if(err) {
+        res.status(400).send('Error adding note: ' + err);
+      } else {
+        res.send('Note added!');
       }
     });
   })

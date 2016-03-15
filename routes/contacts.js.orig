@@ -1,7 +1,15 @@
 var express = require('express');
 var router = express.Router();
+var _ = require('underscore');
 var moment = require('moment');
 var Contact = require('../models/contacts');
+
+router.use(function(req, res, next) {
+   if(!req.user) {
+      res.redirect('/auth');
+   }
+   next();
+});
 
 router.get('/', function(req, res) {
   Contact.find( function(err, contacts, count) {
@@ -38,11 +46,11 @@ router.route('/:contact_id')
     });
   })
 
-  .get(function(req, res) {
+  .get(function(req, res, next) {
     res.render('edit', {contact: contact, moment: moment});
   })
 
-  .post(function(req, res) {
+  .post(function(req, res, next) {
     contact.notes.push({
       note: req.body.notes
     });
@@ -56,7 +64,7 @@ router.route('/:contact_id')
     });
   })
 
-  .put(function(req, res) {
+  .put(function(req, res, next) {
     contact.name = req.body.fullname;
     contact.job = req.body.job;
     contact.nickname = req.body.nickname;
@@ -71,7 +79,7 @@ router.route('/:contact_id')
     });
   })
 
-  .delete(function(req, res) {
+  .delete(function(req, res, next) {
     contact.remove(function(err, contact) {
       if(err) {
         res.status(400).send("Error removing contact: " + err);
