@@ -15,7 +15,8 @@ var routes = require('./routes/index');
 var contacts = require('./routes/contacts');
 var auth = require('./routes/auth');
 
-var MongoURI = process.env.MONGO_URI || 'mongodb://localhost/testdb';
+var CallbackDomain = process.env.CALLBACK_DOMAIN || 'http://localhost:3000';
+var MongoURI = process.env.MONGOLAB_URI || 'mongodb://localhost/testdb';
 mongoose.connect(MongoURI, function(err, res) {
     if(err) {
         console.log('ERROR connecting to: ' + MongoURI + '. ' + err);
