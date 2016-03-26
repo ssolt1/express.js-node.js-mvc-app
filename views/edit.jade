@@ -7,6 +7,8 @@ block content
       form(role="form", method="post", action="/contacts/#{contact.id}?_method=put")
         include editform
         button.btn.btn-primary(type="submit") Edit user
+        |  
+        a.btn.btn-default(href="/contacts/") Contacts
         
     .col-md-6
       h2 Notes
