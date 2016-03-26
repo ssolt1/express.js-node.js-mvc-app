@@ -27,7 +27,8 @@ router.post('/', function(req, res) {
       if(err) {
         res.status(400).send('Error saving new contact: ' + err);
       } else {
-        res.send("New contact created");
+        // res.send("New contact created");  //  page would just display message, but not return and refresh the contacts route. The redirect with single '.' resolved the issue.
+        res.redirect('.');
       }
     })
 });
@@ -59,7 +60,8 @@ router.route('/:contact_id')
       if(err) {
         res.status(400).send('Error adding note: ' + err);
       } else {
-        res.send('Note added!');
+        // res.send('Note added!');  //  changed to redirect('back') for desired behivior, update and remain on notes page.
+        res.redirect('back');
       }
     });
   })
@@ -74,7 +76,8 @@ router.route('/:contact_id')
       if(err) {
         res.status(400).send('Error saving contact: ' + err);
       } else {
-        res.send('Contact saved');
+        // res.send('Contact saved');  //  page would just display message, but not return and refresh the contacts route. The redirect with single '.' resolved the issue.
+        res.redirect('.');
       }
     });
   })
@@ -85,6 +88,7 @@ router.route('/:contact_id')
         res.status(400).send("Error removing contact: " + err);
       } else {
         res.send('Contact removed');
+        // res.redirect('.');
       }
     });
   });
