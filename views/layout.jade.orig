@@ -8,6 +8,3 @@ html
 
     script(type="text/javascript", src="/javascripts/jquery-min.js")
     script(type="text/javascript", src="/javascripts/main.js")
-
-    block footer
-      include ./includes/footer.jade
