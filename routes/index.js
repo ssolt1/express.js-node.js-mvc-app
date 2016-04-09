@@ -2,7 +2,10 @@ var express = require('express');
 var router = express.Router();
 
 /* GET home page. */
-router.get('/', function(req, res) {
+router.get('/', function(req, res, next) {
+
+ // if(err) return next(err);
+
   if(!req.session.views) {
     req.session.views = 0;
   }
@@ -13,5 +16,9 @@ router.get('/', function(req, res) {
     views: req.session.views
   });
 });
+
+router.use(function(err, req, res, next){
+    next();
+})
 
 module.exports = router;
