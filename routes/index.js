@@ -11,7 +11,7 @@ router.get('/', function(req, res, next) {
   }
   req.session.views++;
   res.render('index', {
-    title: 'Express',
+    title: 'Contacts',
     user: req.user,
     views: req.session.views
   });
